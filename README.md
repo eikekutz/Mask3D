@@ -200,3 +200,78 @@ Following PointGroup, HAIS and SoftGroup, we finetune a model pretrained on Scan
   year      = {2023}
 }
 ```
+
+
+## User guide alexandra
+### Setup
+```bash
+# create docker image
+docker build -t upcycling:latest .
+# run docker image on all gpus
+docker run --runtime nvidia --gpus all -it --rm -v <path/to/data>:/data upcycling:latest
+# run docker image on specific gpu e.g device 0
+docker run --runtime nvidia --gpus device=0 -it --rm -v <path/to/data>:/data upcycling:latest
+```
+
+### Data
+
+The data should be structured as follows:
+```bash
+<root>
+├── data
+│   ├── upcycling
+│   │   ├── <dataset_name>
+│   │   │   ├── <sample name>
+
+
+e.g.
+<root>
+├── data
+│   ├── upcycling
+│   │   ├── povl_scans
+│   │   │   ├── 4bd001ee6d
+
+```
+
+### Preprocessing
+```bash
+# Preprocessing step 1: compute point cloud
+python3 compute_point_cloud.py --dataset_path </absolute/path/to/dataset> --sample_name <sample_name> 
+
+# e.g
+python3 compute_point_cloud.py --dataset_path "/data/upcycling/povl_scans" --sample_name "f9efa51f54"
+
+# Preprocessing step 2 (recommended : n_jobs=None for big point clouds): compute point cloud
+python3 datasets/preprocessing/povl_preprocessing.py preprocess --data_dir </absolute/path/to/dataset> --save_dir </absolute/path/to/save_dir>
+
+# e.g
+python3 datasets/preprocessing/povl_preprocessing.py preprocess --data_dir "/data/upcycling/povl_scans" --save_dir "data/upcycling/povl_scans"
+```
+### Inference
+```bash
+
+python3 main_instance_segmentation.py \
+  general.checkpoint='PATH_TO_CHECKPOINT.ckpt' \
+  general.train_mode=false \
+  data/datasets='inference_test' \
+  general.area=5 \
+  general.num_targets=14 \
+  data.num_labels=13 \
+  model.num_queries=100 \
+  general.topk_per_image=-1 \
+  general.use_dbscan=true \
+  general.dbscan_eps=0.6
+
+e.g.
+python3 main_instance_segmentation.py \
+  general.checkpoint='checkpoints/s3dis/area5_scannet_pretrained.ckpt' \
+  general.train_mode=false \
+  data/datasets='inference_test' \
+  general.area=5 \
+  general.num_targets=14 \
+  data.num_labels=13 \
+  model.num_queries=100 \
+  general.topk_per_image=-1 \
+  general.use_dbscan=true \
+  general.dbscan_eps=0.6
+```
