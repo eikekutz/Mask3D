@@ -9,7 +9,7 @@ general:
   train_on_segments: false
   eval_on_segments: false
   filter_out_instances: false
-  save_visualizations: false
+  save_visualizations: true
   visualization_point_size: 20
   decoder_id: -1
   export: false
@@ -17,7 +17,7 @@ general:
   ignore_class_threshold: 100
   project_name: scannet
   workspace: jonasschult
-  experiment_name: DEBUG_ABLATION
+  experiment_name: DEBUG_ABLATION_2
   num_targets: 19
   add_instance: true
   dbscan_eps: 0.95
