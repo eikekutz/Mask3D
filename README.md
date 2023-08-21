@@ -203,6 +203,11 @@ Following PointGroup, HAIS and SoftGroup, we finetune a model pretrained on Scan
 
 
 ## User guide alexandra
+### prerequisites
+ - existing user on wandb.ai
+  - change user in config (conf/logging/full ->entity) and get an API key from wandb.ai
+- get dataset from NAS drive.alexandra.dk:/DigitalLead
+
 ### Setup
 ```bash
 # create docker image
@@ -245,7 +250,7 @@ python3 compute_point_cloud.py --dataset_path "/data/upcycling/povl_scans" --sam
 python3 datasets/preprocessing/povl_preprocessing.py preprocess --data_dir </absolute/path/to/dataset> --save_dir </absolute/path/to/save_dir>
 
 # e.g
-python3 datasets/preprocessing/povl_preprocessing.py preprocess --data_dir "/data/upcycling/povl_scans" --save_dir "data/upcycling/povl_scans"
+python3 datasets/preprocessing/povl_preprocessing.py preprocess --data_dir "/data/upcycling/povl_scans" --save_dir "data/processed/povl_scans"
 ```
 ### Inference
 ```bash
@@ -275,3 +280,6 @@ python3 main_instance_segmentation.py \
   general.use_dbscan=true \
   general.dbscan_eps=0.6
 ```
+### Visualization
+
+Find the visualizations in the following folder saved/Upcycling/visualizations/<sample_name> as an html file you can open in your browser
