@@ -972,9 +972,9 @@ def evaluate(
             gt_ins = gt_ids - (gt_ids // 1000) * 1000
 
             # pred_sem = v['pred_classes'] - 1
-            pred_sem = np.zeros(v["pred_masks"].shape[0], dtype=np.int)
+            pred_sem = np.zeros(v["pred_masks"].shape[0], dtype=np.int32)
             # TODO CONTINUE HERE!!!!!!!!!!!!!
-            pred_ins = np.zeros(v["pred_masks"].shape[0], dtype=np.int)
+            pred_ins = np.zeros(v["pred_masks"].shape[0], dtype=np.int32)
 
             for inst_id in reversed(range(v["pred_masks"].shape[1])):
                 point_ids = np.argwhere(v["pred_masks"][:, inst_id] == 1.0)[
@@ -1109,8 +1109,8 @@ def evaluate(
         precision = np.zeros(NUM_CLASSES)
         recall = np.zeros(NUM_CLASSES)
         for i_sem in range(NUM_CLASSES):
-            tp = np.asarray(tpsins[i_sem]).astype(np.float)
-            fp = np.asarray(fpsins[i_sem]).astype(np.float)
+            tp = np.asarray(tpsins[i_sem]).astype(np.float32)
+            fp = np.asarray(fpsins[i_sem]).astype(np.float32)
             tp = np.sum(tp)
             fp = np.sum(fp)
             rec = tp / total_gt_ins[i_sem]
