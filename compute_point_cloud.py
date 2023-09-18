@@ -141,6 +141,10 @@ if __name__=='__main__':
 
     data = read_data(path)
     pc = point_clouds(data)
+
+    # Inverse z-axis
+    pc[0] = pc[0].transform(np.array([[1,0,0,0],[0,0,-1,0],[0,1,0,0],[0,0,0,1]]))
+
     directory_name = os.path.split(path)[-1]
     os.makedirs(args.dataset_path+f'/Area_5/{directory_name}', exist_ok=True)
     o3d.io.write_point_cloud(filename=args.dataset_path+f'/Area_5/{directory_name}/{directory_name}.pts', pointcloud=pc[0], print_progress=True)
